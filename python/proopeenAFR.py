@@ -13,29 +13,56 @@ def AFRcalc(afr,amt):
     air = fuel * afr
     return([air,fuel])
 
+def actualAFRCalc(fuel):
+    fuelName = fuel['Name']
+    molecule = fuel['Molecule']
+    reaction = fuel['Reaction']
+    reactants = reaction[0]
+    products = reaction[1]
+    H = 1.008 #amu
+	C = 12.011 #amu
+	O = 15.999 #amu
+
+
+fuels = {
+    'Propane':{
+        'Name':'Propane',
+        'Molecule':'C3H8',
+        'Reaction': ['C3H8+5O2','3CO2+4H2O']
+    }
+}
+
+print(actualAFRCalc(fuels['Propane']))
+
+
 #air = literally just air
 #fuel = propane
 
 airDensity = 1.225 #g/L
 fuelDensity = 1.97 #g/L
 
+
 actualAFR = 17.2768474726
 idealAFR = 15.1
 
-densDiff = airDensity / fuelDensity
+
+densDiff = fuelDensity / airDensity
+
 
 volActualAFR = densDiff * actualAFR
 volIdealAFR = densDiff * idealAFR
 
-
 #displacement = input("Displacement in Liters")
-
 displacement = 0.0705 #we're assuming 1/2 of the displacement is for the intake, considering its a 2 stroke
 
-ratio = AFRcalc(volActualAFR , displacement)
-print(ratio)
-ratio = AFRcalc(volIdealAFR , displacement)
-print(ratio)
+
+volActualRatio = AFRcalc(volActualAFR , displacement)
+volIdealRatio = AFRcalc(volIdealAFR , displacement)
+
+
+actualFuelMass = volActualRatio[1] * fuelDensity
+idealFuelMass = volIdealRatio[1] * fuelDensity
+
 
 
 ##finding actual ratio
