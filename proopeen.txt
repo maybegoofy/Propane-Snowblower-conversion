@@ -9,6 +9,10 @@ Air density:1.225g/L
 
 STOICHEOMETRIC RATIO OF PROPANE: 15.1:1 by mass, 23.9:1 by volume
 
+
+
+# 11/5/2023
+
 For this we're going to assume 1/2 of the stroke is intake, so 70.5cc per revolution
 
 2.8313cc of propane per revolution 0.0028313L
@@ -30,3 +34,42 @@ NOT ENOUGH, WILL HAVE TO FIND A NEW SOLUTION
 
 
 for reading: https://x-engineer.org/air-fuel-ratio/ 
+
+
+
+# 11/6/2023
+
+still assuming 70.5cc of intake per rev
+
+2.8313253cc of propane per rev
+67.6686747cc of air per rev
+
+0.08289413g of air per rev
+0.0054896775g of propane per rev
+
+for a AFR(by mass) of 15.0999999545
+
+Chemistry:
+
+Propane combustion equation:
+	C3H8+5O2→3CO2+4H2O
+
+Atomic weights:
+	Hydrogen= 1.008 amu
+	Carbon= 12.011 amu
+	Oxygen= 15.999 amu
+
+Propane Mass:
+	3(12.011) + 8(1.008)
+	36.033    + 8.064
+	44.097
+
+Oxygen Mass:
+	5(2(15.999))
+	5(31.998)
+	159.99
+
+Assuming air is 21% oxygen by mass
+	100/21 * 159.99
+	4.76190476 * 159.99
+	761.857143
