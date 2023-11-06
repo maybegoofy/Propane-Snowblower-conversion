@@ -1,0 +1,32 @@
+Snowblower Toro CCR2500 2-stroke
+Engine speed: 3800 RPM
+Idle speed: 2200 RPM
+Displacement: 141cc 0.141L
+
+Propane density:1.97g/L
+Air density:1.225g/L
+
+
+STOICHEOMETRIC RATIO OF PROPANE: 15.1:1 by mass, 23.9:1 by volume
+
+For this we're going to assume 1/2 of the stroke is intake, so 70.5cc per revolution
+
+2.8313cc of propane per revolution 0.0028313L
+
+.00557771g of propane per revolution
+
+needs 20.9g of propane per minute at 3800 RPM
+
+or 12.2709639gpm at idle
+
+can only run for 20 minutes at 3800 RPM with 400g tank
+
+Bernzomatic torch:
+
+1.206g/min of propane UPRIGHT
+1.8 g/min of propane UPSIDE DOWN
+
+NOT ENOUGH, WILL HAVE TO FIND A NEW SOLUTION
+
+
+
