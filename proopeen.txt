@@ -29,4 +29,4 @@ Bernzomatic torch:
 NOT ENOUGH, WILL HAVE TO FIND A NEW SOLUTION
 
 
-
+for reading: https://x-engineer.org/air-fuel-ratio/ 
