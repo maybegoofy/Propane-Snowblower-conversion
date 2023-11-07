@@ -6,35 +6,48 @@ def atmMass(chem):
     Hmass = 1.008 #amu
     Cmass = 12.011 #amu
     Omass = 15.999 #amu
-    start = eval(chem[1])
-    end = len(chem) - 1
-    if(type(start) == type(0)):
+
+    if(chem[1] != 'h' and chem[1] != 'c' and chem[1] != 'o'):
         chemMult = eval(chem[1])
-        chem = chem[2:end]
+        chem = chem[2:]
     else:
         chemMult = 1
-        chem = chem[1:end]
+        chem = chem[1:]
+    
     tmp = []
     for l in range(len(chem)):
         if(chem[l] == 'h'):
             tmp.append(Hmass)
-            if (type(eval(chem[l+1])) == type(0)):
+            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
                 tmp.append(1)
         elif(chem[l] == 'c'):
             tmp.append(Cmass)
-            if (type(eval(chem[l+1])) == type(0)):
+            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
                 tmp.append(1)
         elif(chem[l] == 'o'):
             tmp.append(Omass)
-            if (type(eval(chem[l+1])) == type(0)):
+            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
                 tmp.append(1)
         else:
-            tmp.append(eval(chem[l]))
-    chem = tmp
-    print(chem)
+            if (chem[l] != ' '):
+                tmp.append(eval(chem[l]))
+    tmp2 = []
+    
+    for t in range(int(len(tmp)/2)):
+        x = t * 2
+        tmp2.append(tmp[x] * tmp[x+1])
+
+    mass = 0
+    for n in range(len(tmp2)):
+        mass += tmp2[n]
+    mass = mass * chemMult
+    return(mass)
+
 
 
 def actualAFRCalc(fuel):
+    o2percent = 21
+    oxyperc = 100/o2percent
     fuelName = fuel['Name']
     molecule = strFormat(fuel['Molecule'])
     reaction = fuel['Reaction']
@@ -58,7 +71,15 @@ def actualAFRCalc(fuel):
         if(molecule == reactants[start:end]):
             otherReactants = f'{reactants[:start1]}{noot}{reactants[end1:]}'
     
-    #
+    fuelMass = atmMass(molecule)
+    otherReactantsMass = 0
+    otherReactantsSplit = otherReactants.split('+')
+    for x in range(len(otherReactantsSplit)):
+        otherReactantsMass += atmMass(otherReactantsSplit[x])
+    airMass = oxyperc * otherReactantsMass
+    ratio = airMass/fuelMass
+    return(ratio)
+
 
 
     
@@ -73,7 +94,3 @@ fuels = {
 }
 
 print(actualAFRCalc(fuels['Propane']))
-
-atmMass(' 5o2h4c ')
-#weh = ' 5o2 '
-#print(weh[:2])
