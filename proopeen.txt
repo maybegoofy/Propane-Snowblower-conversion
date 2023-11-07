@@ -74,3 +74,8 @@ Assuming air is 21% oxygen by mass
 	4.76190476 * 159.99
 	761.857143
 
+
+# 11/7/2023
+
+Made the script ~/Propane_Snowblower_conversion/python/proopeenAFR.py
+calculates the real AFR (by chemistry) and calculates the amount of fuel required for the displacement of the motor and the ideal and actual AFRs

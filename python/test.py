@@ -1,96 +1,38 @@
-def strFormat(str):
-    strx = str.replace('+',' + ')
-    return(f' {strx} ')
-
-def atmMass(chem):
-    Hmass = 1.008 #amu
-    Cmass = 12.011 #amu
-    Omass = 15.999 #amu
-
-    if(chem[1] != 'h' and chem[1] != 'c' and chem[1] != 'o'):
-        chemMult = eval(chem[1])
-        chem = chem[2:]
-    else:
-        chemMult = 1
-        chem = chem[1:]
-    
-    tmp = []
-    for l in range(len(chem)):
-        if(chem[l] == 'h'):
-            tmp.append(Hmass)
-            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
-                tmp.append(1)
-        elif(chem[l] == 'c'):
-            tmp.append(Cmass)
-            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
-                tmp.append(1)
-        elif(chem[l] == 'o'):
-            tmp.append(Omass)
-            if(chem[l+1] == 'h' or chem[l+1] == 'c' or chem[l+1] == 'o' or chem[l+1] == ' '):
-                tmp.append(1)
-        else:
-            if (chem[l] != ' '):
-                tmp.append(eval(chem[l]))
-    tmp2 = []
-    
-    for t in range(int(len(tmp)/2)):
-        x = t * 2
-        tmp2.append(tmp[x] * tmp[x+1])
-
-    mass = 0
-    for n in range(len(tmp2)):
-        mass += tmp2[n]
-    mass = mass * chemMult
-    return(mass)
+import math
 
 
 
-def actualAFRCalc(fuel):
-    o2percent = 21
-    oxyperc = 100/o2percent
-    fuelName = fuel['Name']
-    molecule = strFormat(fuel['Molecule'])
-    reaction = fuel['Reaction']
-    reactants = strFormat(reaction[0])
-    products = strFormat(reaction[1])
+#defining other world factors, edit 'boost' if running boost
+boost = 0 #boost pressure in PSI
+ATMpressure = 1 #atmospheric pressure in atmospheres
 
-    otherReactantsLen = len(reactants) - len(molecule)
+#calculating air pressure at altitude
+#https://www.omnicalculator.com/physics/air-pressure-at-altitude
+'''
+ATMpa = 101325 * ATMpressure
+g = 9.80665
+MM = 0.0289644
+tempK = 300
+psn = g * MM * altM
+psd = 8.31432 * tempK 
+pss = psn/psd
+altPressure = ATMpa * math.e * pss
 
-    for i in range(otherReactantsLen):
-        start = i
-        end = i + len(molecule)
-        end1 = end + 1
+print(altPressure)
+'''
+#https://en.wikipedia.org/wiki/Barometric_formula 
 
-        if(i > 0):
-            noot = ' + '
-            start1 = start - 1
-        else:
-            noot = ''
-            start1 = start
-        
-        if(molecule == reactants[start:end]):
-            otherReactants = f'{reactants[:start1]}{noot}{reactants[end1:]}'
-    
-    fuelMass = atmMass(molecule)
-    otherReactantsMass = 0
-    otherReactantsSplit = otherReactants.split('+')
-    for x in range(len(otherReactantsSplit)):
-        otherReactantsMass += atmMass(otherReactantsSplit[x])
-    airMass = oxyperc * otherReactantsMass
-    ratio = airMass/fuelMass
-    return(ratio)
+altM = 300
 
-
-
-    
-
-
-fuels = {
-    'Propane':{
-        'Name':'Propane',
-        'Molecule':'c3h8',
-        'Reaction': ['c3h8+5o2','3co2+4h2o']
-    }
-}
-
-print(actualAFRCalc(fuels['Propane']))
+ATMpa = 101325 * ATMpressure #reference pressure 
+g = 9.80665 #gravity
+M = 0.0289644 #molar mass of earth air kg/mol
+R = 8.31432 #universal gas constant J/(mol*K)
+tempK = 300
+psn = -1 * g * M * altM
+psd = R * tempK 
+pss = psn/psd
+ATMx = math.e ** pss
+altPa = ATMpa * ATMx
+altPressure = altPa/101325
+print(altPressure)
