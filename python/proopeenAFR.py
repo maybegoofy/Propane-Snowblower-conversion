@@ -107,7 +107,8 @@ fuels = {
         'Molecule':'c3h8',
         'Reaction': ['c3h8+5o2','3co2+4h2o'],
         'Ideal Ratio' : 15.1,
-        'Density': 1.97
+        'Density': 1.97,
+        'Type':'gas'
     }
 }
 
@@ -115,7 +116,7 @@ fuels = {
 #choosing fuel type
 availFuels = list(fuels.keys())
 defFuel = 1
-
+print('')
 while True:
     print('Fuel choices(what the program has included):')
     for y in range(len(availFuels)):
@@ -128,13 +129,13 @@ while True:
         try:
             fuelNum = int(eval(fuelChoice))
         except:
-            print('not a number, to use Default value, press ENTER')
+            print('\nnot a number, to use Default value, press ENTER')
             fuelNum = fuelChoice
         if (type(fuelNum) == type(1)):
             try:
                 availFuels[fuelNum-1]
             except:
-                print('Choice not in index, to use Default value, press ENTER')
+                print('\nChoice not in index, to use Default value, press ENTER')
             else:
                 break
 
@@ -146,10 +147,11 @@ fuel = availFuels[fuelNum]
 #choosing displacement
 disp = 70.5#cc #we're assuming 1/2 of the displacement is for the intake, considering its a 2 stroke
 
+print('')
 while True:
     displacement = input("Displacement in cc(numbers only, Default is 70.5cc)")
     if (displacement == ''):
-        displacement = disp
+        displace = disp
         break
     else:
         try:
@@ -161,7 +163,7 @@ while True:
             if (displace > 0.0):
                 break
             else:
-                print('Displacement must be greater than 0cc, to use Default value, press ENTER')
+                print('\nDisplacement must be greater than 0cc, to use Default value, press ENTER')
 
 displacement = displace/1000 #convert cc to L
 
@@ -169,8 +171,9 @@ displacement = displace/1000 #convert cc to L
 idle = 2200
 max = 3800
 
+print('')
 while True:
-    idleCh = input("Idle RPM (numbers only, Default is 3800 RPM)")
+    idleCh = input("Idle RPM (numbers only, Default is 2200 RPM)")
     if (idleCh == ''):
         idleRPM = idle
         break
@@ -185,10 +188,11 @@ while True:
             if (idleRPM > 0):
                 break
             else:
-                print('Idle RPM must be greater than 0 RPM, to use Default value, press ENTER')
+                print('\nIdle RPM must be greater than 0 RPM, to use Default value, press ENTER')
 
+print('')
 while True:
-    maxCh = input("Max RPM (numbers only, Default is 2200 RPM)")
+    maxCh = input("Max RPM (numbers only, Default is 3800 RPM)")
     if (maxCh == ''):
         maxRPM = max
         break
@@ -203,35 +207,37 @@ while True:
             if (maxRPM > 0):
                 break
             else:
-                print('Max RPM must be greater than 0 RPM, to use Default value, press ENTER')
+                print('\nMax RPM must be greater than 0 RPM, to use Default value, press ENTER')
 
 #defining altitude
+print('')
 alt = 0
 while True:
     altCh = input("Altitude in feet (numbers only, Default is 0 feet a.k.a. sealevel)")
+
     if (altCh == ''):
         altFT = alt
         break
     else:
         try:
-            altInt = int(eval(alt))
+            altInt = eval(altCh)
             altFT = altInt
         except:
-            print('not a interger, to use Default value, press ENTER')
+            print('\nNot a interger, to use Default value, press ENTER')
             altFT = altCh
-        if (type(altFT) == type(1)):
+        else:
             break
 
 
-altM = altFT
+altM = altFT/3.28084
 #https://en.wikipedia.org/wiki/Barometric_formula 
 SLpressure = 1 #pressure at sea level in Atmospheres
 
-ATMpa = 101325 * SLpressure #reference pressure 
+ATMpa = 101325 * SLpressure #reference pressure in pascals
 g = 9.80665 #gravity
 M = 0.0289644 #molar mass of earth air kg/mol
 R = 8.31432 #universal gas constant J/(mol*K)
-tempK = 300
+tempK = 300 #temperature in Kelvin
 psn = -1 * g * M * altM
 psd = R * tempK 
 pss = psn/psd
@@ -239,17 +245,21 @@ ATMx = math.e ** pss
 altPa = ATMpa * ATMx
 altPressure = altPa/101325
 
-SLMairDensity = 1.225 #g/L
-ATMairDensity = 1.225 #g/L
+SLairDensity = 1.225 #g/L air density at sea level
+ATMairDensity = SLairDensity * altPressure #g/L air density at elevation
 
-boost = 0
+boost = 0 #psi
 
-boostATM = boost/14.7
-intakePressure = ATMpressure + boostATM #in atmospheres, 1 ATM is air pressure at sealevel
+boostATM = boost/14.7 #convert boost psi to atmospheres
+intakePressure = SLpressure + boostATM #in atmospheres, 1 ATM is air pressure at sealevel
 airDensity = ATMairDensity * intakePressure
 
 airDensity = ATMairDensity
-fuelDensity = fuels[fuel]['Density']
+fuelDensitySL = fuels[fuel]['Density']
+if(fuels[fuel]['Type'] == 'gas'):
+    fuelDensity = fuelDensitySL * airDensity
+else:
+    fuelDensity = fuelDensitySL
 
 #define AFRs
 actualAFR = actualAFRCalc(fuels[fuel])
@@ -281,9 +291,11 @@ else:
 fuelUseIdle = idleRPM * actualFuelMass
 fuelUseMax = maxRPM * actualFuelMass
 
-print(f'Real AFR({ratioType}, lambda: {lambo}): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel\n')
+print('\nResults:')
+
+print(f'\nReal AFR({ratioType}, lambda: {lambo}): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
 
 fuelUseIdle = idleRPM * idealFuelMass
 fuelUseMax = maxRPM * idealFuelMass
 
-print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel\n')
+print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
