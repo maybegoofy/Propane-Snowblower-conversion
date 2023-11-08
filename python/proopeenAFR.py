@@ -27,8 +27,16 @@ def atmMass(chem):
     Omass = 15.999 #amu
 
     if(chem[1] != 'h' and chem[1] != 'c' and chem[1] != 'o'):
-        chemMult = eval(chem[1])
-        chem = chem[2:]
+        if(chem[2] != 'h' and chem[2] != 'c' and chem[2] != 'o'):
+            if(chem[3] != 'h' and chem[3] != 'c' and chem[3] != 'o'):
+                chemMult = eval(chem[1:4])
+                chem = chem[4:]
+            else:
+                chemMult = eval(chem[1:3])
+                chem = chem[3:]
+        else:
+            chemMult = eval(chem[1])
+            chem = chem[2:]
     else:
         chemMult = 1
         chem = chem[1:]
@@ -67,7 +75,7 @@ def actualAFRCalc(fuel):
     o2percent = 21
     oxyperc = 100/o2percent
     fuelName = fuel['Name']
-    molecule = strFormat(fuel['Molecule'])
+    molecule = fuel['Molecule'].lower()
     reaction = fuel['Reaction']
     reactants = strFormat(reaction[0])
     products = strFormat(reaction[1])
@@ -87,9 +95,25 @@ def actualAFRCalc(fuel):
             start1 = start
         
         if(molecule == reactants[start:end]):
-            otherReactants = f'{reactants[:start1]}{noot}{reactants[end1:]}'
+            print(start-1)
+            print(start-2)
+            print(start-3)
+            if (reactants[start-1] != ' '):
+                if (reactants[start-2] != ' '):
+                    if (reactants[start-3] != ' '):
+                        otherReactants = f'{reactants[:start1-3]}{noot}{reactants[end1:]}'
+                        fuelMolecule = reactants[start-3:end]
+                    else:
+                        otherReactants = f'{reactants[:start1-1]}{noot}{reactants[end1:]}'
+                        fuelMolecule = reactants[start-1:end]
+                else:
+                    otherReactants = f'{reactants[:start1-1]}{noot}{reactants[end1:]}'
+                    fuelMolecule = reactants[start-1:end]
+            else:
+                otherReactants = f'{reactants[:start1]}{noot}{reactants[end1:]}'
+                fuelMolecule = reactants[start:end]
     
-    fuelMass = atmMass(molecule)
+    fuelMass = atmMass(fuelMolecule)
     otherReactantsMass = 0
     otherReactantsSplit = otherReactants.split('+')
     for x in range(len(otherReactantsSplit)):
@@ -106,9 +130,17 @@ fuels = {
         'Name':'Propane',
         'Molecule':'c3h8',
         'Reaction': ['c3h8+5o2','3co2+4h2o'],
-        'Ideal Ratio' : 15.1,
-        'Density': 1.97,
+        'Ideal Ratio' : 15.1, #to 1
+        'Density': 1.97, #in g/L
         'Type':'gas'
+    },
+    'Petrol':{
+        'Name':'Petrol',
+        'Molecule':'c8h18',
+        'Reaction': ['2c8h18+25o2','16co2+18h2o'],
+        'Ideal Ratio' : 14.7, #to 1
+        'Density': 755, #in g/L
+        'Type':'liquid'
     }
 }
 
@@ -145,11 +177,11 @@ fuel = availFuels[fuelNum]
 #fuel = 'Propane'
 
 #choosing displacement
-disp = 70.5#cc #we're assuming 1/2 of the displacement is for the intake, considering its a 2 stroke
+disp = 141#cc #we're assuming 1/2 of the displacement is for the intake, considering its a 2 stroke
 
 print('')
 while True:
-    displacement = input("Displacement in cc(numbers only, Default is 70.5cc)")
+    displacement = input("Displacement in cc(numbers only, Default is 141cc)")
     if (displacement == ''):
         displace = disp
         break
@@ -228,6 +260,29 @@ while True:
         else:
             break
 
+#2 or 4 stroke engine type
+print('')
+strokeDef = 2
+while True:
+    strokeCh = input("Engine stroke type(2 or 4 only, numbers only please, Default is 2-stroke)\nNote: will half Displacement(per stroke) for 2-strokes, assuming only half of each down stroke is intake.")
+
+    if (strokeCh == ''):
+        stroke = strokeDef
+        break
+    else:
+        try:
+            stroke = int(eval(strokeCh))
+        except:
+            print('\nNot a interger, to use Default value, press ENTER')
+            stroke = strokeCh
+        else:
+            if (stroke == 2 or stroke == 4):
+                strokeRPM = int(stroke/2)
+                break
+            else:
+                print('\nMust be either 2-stroke or 4-stroke')
+
+
 
 altM = altFT/3.28084
 #https://en.wikipedia.org/wiki/Barometric_formula 
@@ -272,9 +327,13 @@ densDiff = fuelDensity / airDensity
 volActualAFR = densDiff * actualAFR
 volIdealAFR = densDiff * idealAFR
 
+if (stroke == 2):
+    displace = displacement/2
+else:
+    displace = displacement
 
-volActualRatio = AFRcalc(volActualAFR , displacement)
-volIdealRatio = AFRcalc(volIdealAFR , displacement)
+volActualRatio = AFRcalc(volActualAFR , displace)
+volIdealRatio = AFRcalc(volIdealAFR , displace)
 
 
 actualFuelMass = volActualRatio[1] * fuelDensity
@@ -288,14 +347,27 @@ elif(lambo > 1):
 else:
     ratioType = 'Rich'
 
-fuelUseIdle = idleRPM * actualFuelMass
-fuelUseMax = maxRPM * actualFuelMass
+if (stroke == 2):
+    fuelUseIdle = idleRPM * actualFuelMass
+    fuelUseMax = maxRPM * actualFuelMass
+else:
+    fuelUseI = idleRPM * actualFuelMass
+    fuelUseM = maxRPM * actualFuelMass
+    fuelUseIdle = fuelUseI/strokeRPM
+    fuelUseMax = fuelUseM/strokeRPM
+
 
 print('\nResults:')
 
-print(f'\nReal AFR({ratioType}, lambda: {lambo}): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
+print(f'\nReal AFR({ratioType}, lambda: {lambo}): To run a {displacement}L({displacement*1000}cc) {stroke}-stroke engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
 
-fuelUseIdle = idleRPM * idealFuelMass
-fuelUseMax = maxRPM * idealFuelMass
+if (stroke == 2):
+    fuelUseIdle = idleRPM * actualFuelMass
+    fuelUseMax = maxRPM * actualFuelMass
+else:
+    fuelUseI = idleRPM * actualFuelMass
+    fuelUseM = maxRPM * actualFuelMass
+    fuelUseIdle = fuelUseI/strokeRPM
+    fuelUseMax = fuelUseM/strokeRPM
 
-print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement}L({displacement*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
+print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement}L({displacement*1000}cc) {stroke}-stroke engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')

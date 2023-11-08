@@ -85,16 +85,5 @@ calculates the real AFR (by chemistry) and calculates the amount of fuel require
 updated the script, now calculates air pressure at altitude, and accounts for that in the tuning
 
 
-Results: //without fuel density altitude changes
-
-Real AFR(Lean, lambda: 1.1394974921487866): To run a 0.0705L(70.5cc) engine at idle(2200 RPM), one would have to supply 8.676154029747046 gpm of fuel, and to max out the engine(3800 RPM), it would need 14.986084233199444 gpm of fuel.
-
-Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) engine at idle(2200 RPM), one would have to supply 9.886455758393348 gpm of fuel, and to max out the engine(3800 RPM), it would need 17.07660540086124 gpm of fuel.
-
-Results: //with fuel density altitude changes
-
-Real AFR(Lean, lambda: 1.139473428779192): To run a 0.0705L(70.5cc) engine at idle(2200 RPM), one would have to supply 8.67484058111466 gpm of fuel, and to max out the engine(3800 RPM), it would need 14.983815549198049 gpm of fuel.
-
-Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) engine at idle(2200 RPM), one would have to supply 9.884750341075602 gpm of fuel, and to max out the engine(3800 RPM), it would need 17.073659680039675 gpm of fuel.
 
 Now I can much more easily calculate my fuel amounts.
