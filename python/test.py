@@ -84,13 +84,18 @@ def actualAFRCalc(fuel):
             print(f'found {molecule} at index {start}:{end}')
             if (reactants[i] == ' '):
                 fuelMolecule = molecule
+                if (i > 0):
+                    sepa = ' + '
+                else: 
+                    sepa = ''
+                otherReactants = f' {reactants[:i]}{sepa}{reactants[end+3:]}'
             else:
                 while True:
                     n += 1
                     if (n > i):
                         break
                     else:
-                        print(reactants[i-n:end])
+                        #print(reactants[i-n:end])
                         if (i >= n and reactants[i-n] == ' '):
                             fuelMolecule = f' {reactants[i-n:end]} '
                             if (len(fuelMolecule) < len(reactants)):
@@ -98,14 +103,14 @@ def actualAFRCalc(fuel):
                                     sepa = ' + '
                                 else: 
                                     sepa = ''
-                                otherReactants = f'" {reactants[:i-n]}{sepa}{reactants[end+3:]}"'
+                                otherReactants = f' {reactants[:i-n]}{sepa}{reactants[end+3:]}'
                             else:
-                                otherReactants = '  '
+                                otherReactants = ''
                             break
                         else:
                             print(reactants[i-n])
 
-    
+
     fuelMass = atmMass(fuelMolecule)
     otherReactantsMass = 0
     otherReactantsSplit = otherReactants.split('+')
@@ -137,4 +142,4 @@ fuels = {
     }
 }
 print(actualAFRCalc(fuels['Propane']))
-print(actualAFRCalc(fuels['Petroleum/Gasoline']))
+#print(actualAFRCalc(fuels['Petroleum/Gasoline']))

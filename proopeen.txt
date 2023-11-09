@@ -74,6 +74,7 @@ Assuming air is 21% oxygen by mass
 	4.76190476 * 159.99
 	761.857143
 
+real afr by mass 17.27684747261718
 
 # 11/7/2023
 
@@ -87,3 +88,22 @@ updated the script, now calculates air pressure at altitude, and accounts for th
 
 
 Now I can much more easily calculate my fuel amounts.
+
+#11/9/2023
+
+21682 BTUs per pound of propane
+
+47.80164847333487 BTUs per gram
+
+Results: //at 6000 ft
+
+Real AFR(Lean, lambda: 1.1384602064662863): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 8.619485573480993 gpm of fuel, and to max out the engine(3800 RPM), it would need 14.888202354194444 gpm of fuel.
+
+Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 9.812941325618349 gpm of fuel, and to max out the engine(3800 RPM), it would need 16.949625926068055 gpm of fuel.
+
+Actual BTU/min
+8.619485573480993 * 47.80164847333487
+14.888202354194444 * 47.80164847333487
+Ideal BTU/min
+9.812941325618349 * 47.80164847333487
+16.949625926068055 * 47.80164847333487
