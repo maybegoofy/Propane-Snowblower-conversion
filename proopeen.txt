@@ -103,7 +103,34 @@ Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine a
 
 Actual BTU/min
 8.619485573480993 * 47.80164847333487
+412.0256194045 BTU/min
+24721.53716427 BTU/h
+
 14.888202354194444 * 47.80164847333487
+711.6806153351 BTU/min
+42700.836920106 BTU/h
+
 Ideal BTU/min
 9.812941325618349 * 47.80164847333487
+469.0747717367 BTU/min
+28144.486304202 BTU/h
+
 16.949625926068055 * 47.80164847333487
+810.2200602724 BTU/min
+48613.203616344 BTU/h
+
+1HP is about 2,544 BTU/h, with a 15-20% energy efficiency
+
+A 400g canister should last between 46.4 minutes(idle) and 26.86 minutes(full throttle) on the "actual" tune,
+and 40.76 minutes(idle) to 23.6 minutes(full throttle) on a "ideal" tune
+A 1LB(453g) canister should last 52.55 minutes(idle) to 30.43 minutes(full throttle) on the "actual" tune, 
+and 46.16 minutes(idle) to 26.72 minutes(full throttle) on a "ideal" tune
+
+And heres the gas/petrol results for reference, everything else the same
+Results:
+
+Real AFR(Lean, lambda: 1.3343972081386581): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 7.864314002766002 gpm of fuel, and to max out the engine(3800 RPM), it would need 13.583815095686731 gpm of fuel.
+
+Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 10.494118649216707 gpm of fuel, and to max out the engine(3800 RPM), it would need 18.126204939556132 gpm of fuel.
+
+The fuel coming in must be 2% oil

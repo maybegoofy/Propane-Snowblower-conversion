@@ -127,6 +127,76 @@ def actualAFRCalc(fuel):
     ratio = airMass/fuelMass
     return(ratio)
 
+def mixFuels(lst, f):
+    density = 0
+    fuelMassS = 0
+    airMassS = 0
+    fIdealR = f['Ideal Ratio']
+    mix = f['mix'][1:]
+    ratios = mix[:int(len(mix)/2)]
+    fs = mix[int(len(mix)/2):]
+    for d in range(2):
+        #mixin: lst[fs[x]]
+        o2percent = 21
+        oxyperc = 100/o2percent
+        fuelName = lst[fs[d]]['Name']
+        molecule = lst[fs[d]]['Molecule'].lower()
+        reaction = lst[fs[d]]['Reaction']
+        reactants = strFormat(reaction[0])
+        products = strFormat(reaction[1])
+
+        otherReactantsLen = len(reactants) - len(molecule)
+
+        for i in range(otherReactantsLen):
+            n = 0
+            start = i+1
+            end = start + len(molecule)
+            if (reactants[start:end+1] == f'{molecule} '):
+                #print(f'found {molecule} at index {start}:{end}')
+                if (reactants[i] == ' '):
+                    fuelMolecule = f' {molecule} '
+                    if (i > 0):
+                        sepa = ' + '
+                    else: 
+                        sepa = ''
+                    otherReactants = f' {reactants[:i]}{sepa}{reactants[end+3:]}'
+                else:
+                    while True:
+                        n += 1
+                        if (n > i):
+                            break
+                        else:
+                            #print(reactants[i-n:end])
+                            if (i >= n and reactants[i-n] == ' '):
+                                #print(fuelMolecule)
+                                fuelMolecule = f' {reactants[i-n:end]} '
+                                if (len(fuelMolecule) < len(reactants)):
+                                    if (i-n > 0):
+                                        sepa = ' + '
+                                    else: 
+                                        sepa = ''
+                                    otherReactants = f' {reactants[:i-n]}{sepa}{reactants[end+3:]}'
+                                else:
+                                    otherReactants = ''
+                                break
+                            else:
+                                print(reactants[i-n])
+
+        fuelMass = atmMass(fuelMolecule)
+        otherReactantsMass = 0
+        otherReactantsSplit = otherReactants.split('+')
+        for x in range(len(otherReactantsSplit)):
+            otherReactantsMass += atmMass(otherReactantsSplit[x])
+        airMass = oxyperc * otherReactantsMass
+        fuelMass = fuelMass * ratios[d]
+        fuelMassS += fuelMass
+        airMass = airMass * ratios[d]
+        airMassS += airMass
+        desity = lst[fs[d]]['Density'] * ratios[d]
+        density += desity
+    print(density)
+    ratio = airMassS/fuelMassS
+    return(ratio, density) 
 
 
 #define available fuel types
@@ -137,7 +207,8 @@ fuels = {
         'Reaction': ['c3h8+5o2','3co2+4h2o'],
         'Ideal Ratio' : 15.1, #to 1
         'Density': 1.97, #in g/L
-        'Type':'gas'
+        'Type':'gas',
+        'mix':[1]
     },
     'Petrol':{
         'Name':'Petrol',
@@ -145,7 +216,29 @@ fuels = {
         'Reaction': ['2c8h18+25o2','16co2+18h2o'],
         'Ideal Ratio' : 14.7, #to 1
         'Density': 755, #in g/L
-        'Type':'liquid'
+        'Type':'liquid',
+        'mix':[1]
+    },
+    'Petrol E10':{
+        'Name':'Petrol E10',
+        'Ideal Ratio' : 14.08, #to 1
+        'Type':'liquid',
+        'mix':[2,.90,.10,'Petrol','Ethanol']
+    },
+    'Petrol E85':{
+        'Name':'Petrol E85',
+        'Ideal Ratio' : 9.7, #to 1
+        'Type':'liquid',
+        'mix':[2,.15,.85,'Petrol','Ethanol']
+    },
+    'Ethanol':{
+        'Name':'Ethanol',
+        'Molecule':'c2h6o',
+        'Reaction': ['c2h6o+3o2','2co2+3h2o'],
+        'Ideal Ratio' : 9, #to 1
+        'Density': 789.45, #in g/L
+        'Type':'liquid',
+        'mix':[1]
     }
 }
 
@@ -178,7 +271,8 @@ while True:
 
 fuelNum = fuelNum - 1
 
-fuel = availFuels[fuelNum]
+fuelCh = availFuels[fuelNum]
+fuel = fuels[fuelCh]
 #fuel = 'Propane'
 
 #choosing displacement
@@ -313,18 +407,25 @@ boostATM = boost/14.7 #convert boost psi to atmospheres
 intakePressure = SLpressure + boostATM #in atmospheres, 1 ATM is air pressure at sealevel
 airDensity = ATMairDensity * intakePressure
 
-fuelDensitySL = fuels[fuel]['Density']
+if (fuel['mix'][0] > 1):
+    newFuel = mixFuels(fuels,fuel)
 
-if(fuels[fuel]['Type'] == 'gas'):
-    fuelDensity = fuelDensitySL * altPressure * intakePressure
+
 else:
-    fuelDensity = fuelDensitySL
+    fuelDensitySL = fuel['Density']
+
+    if(fuel['Type'] == 'gas'):
+        fuelDensity = fuelDensitySL * altPressure * intakePressure
+    else:
+        fuelDensity = fuelDensitySL
+
+
+    #define AFRs
+    actualAFR = actualAFRCalc(fuel)
+    idealAFR = fuel['Ideal Ratio']
+
 #define the difference between the fuel and air density
 densDiff = fuelDensity / airDensity
-
-#define AFRs
-actualAFR = actualAFRCalc(fuels[fuel])
-idealAFR = fuels[fuel]['Ideal Ratio']
 
 #calculate volumetric AFR
 volActualAFR = densDiff * actualAFR
