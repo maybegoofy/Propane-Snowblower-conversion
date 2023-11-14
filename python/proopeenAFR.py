@@ -194,7 +194,7 @@ def mixFuels(lst, f):
         airMassS += airMass
         desity = lst[fs[d]]['Density'] * ratios[d]
         density += desity
-    print(density)
+    #print(density)
     ratio = airMassS/fuelMassS
     return(ratio, density) 
 
@@ -409,7 +409,9 @@ airDensity = ATMairDensity * intakePressure
 
 if (fuel['mix'][0] > 1):
     newFuel = mixFuels(fuels,fuel)
-
+    fuelDensity = newFuel[1]
+    actualAFR = newFuel[0]
+    print(actualAFR)
 
 else:
     fuelDensitySL = fuel['Density']
@@ -422,7 +424,7 @@ else:
 
     #define AFRs
     actualAFR = actualAFRCalc(fuel)
-    idealAFR = fuel['Ideal Ratio']
+idealAFR = fuel['Ideal Ratio']
 
 #define the difference between the fuel and air density
 densDiff = fuelDensity / airDensity

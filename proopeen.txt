@@ -126,11 +126,11 @@ and 40.76 minutes(idle) to 23.6 minutes(full throttle) on a "ideal" tune
 A 1LB(453g) canister should last 52.55 minutes(idle) to 30.43 minutes(full throttle) on the "actual" tune, 
 and 46.16 minutes(idle) to 26.72 minutes(full throttle) on a "ideal" tune
 
-And heres the gas/petrol results for reference, everything else the same
+And heres the gas/petrol(E0) results for reference, everything else the same
 Results:
 
 Real AFR(Lean, lambda: 1.3343972081386581): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 7.864314002766002 gpm of fuel, and to max out the engine(3800 RPM), it would need 13.583815095686731 gpm of fuel.
 
 Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 10.494118649216707 gpm of fuel, and to max out the engine(3800 RPM), it would need 18.126204939556132 gpm of fuel.
 
-The fuel coming in must be 2% oil
+(The fuel coming in must be 2% oil, this does not account for that)
