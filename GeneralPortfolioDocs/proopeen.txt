@@ -150,8 +150,30 @@ x = 0.5 * OD #Original Diameter of the pressure regulator /2 for radius
 y = 0.5 * FD #Final Diameter of pressure regulator /2 for radius
 d = AR #Area Ratio of the amount of area before and after
 
-#define math function # pi = π, squared = ²
-CAF =  πr² #circle area formula
+#define math functions # pi = π, squared = ²
+CAF(r) =  πr² #circle area formula
+OA = CAF(x) #Original area
+FA = CAF(y) #Final area
 
+#finalish formula + simplifications
+
+	FA = d * OA 
+
+#simplify
+
+	CAF(y) = d * CAF(x)
+	πy² = d * πx²
+
+#finalized formula 
+
+	π( FD / 2 )² = d * π( OD / 2 )²
+
+#Example/verify
+
+OD = 10
+FD = 31.62
+d = 10
+π( FD / 2 )² = d * π( OD / 2 )²
 
 ###  END MATH  ###
+
