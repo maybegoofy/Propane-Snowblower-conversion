@@ -134,3 +134,24 @@ Real AFR(Lean, lambda: 1.3343972081386581): To run a 0.0705L(70.5cc) 2-stroke en
 Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 10.494118649216707 gpm of fuel, and to max out the engine(3800 RPM), it would need 18.126204939556132 gpm of fuel.
 
 (The fuel coming in must be 2% oil, this does not account for that)
+
+11/15/2023
+
+Will be picking up a 4-stroke lawn mower from Mrs. Manley on 11/16/2023, as the 4-stroke will be much simpler to convert, as I will not have to create a oil system, as the 2-stroke Snowblower needs supplementary oil mixed in with the fuel.
+
+The Snowblower needs about 10x the amount of fuel as the propane torch can provide, I plan on drilling out the torch "pressure regulator"(a small hole the gas has to go through) to a larger diameter, if possible.
+
+### START MATH ### 
+
+#will be in psuedocode, with comments
+
+#define variables
+x = 0.5 * OD #Original Diameter of the pressure regulator /2 for radius
+y = 0.5 * FD #Final Diameter of pressure regulator /2 for radius
+d = AR #Area Ratio of the amount of area before and after
+
+#define math function # pi = π, squared = ²
+CAF =  πr² #circle area formula
+
+
+###  END MATH  ###
