@@ -175,5 +175,103 @@ FD = 31.62
 d = 10
 π( FD / 2 )² = d * π( OD / 2 )²
 
+
+( FD / 2 )² = d * ( OD / 2 )²
+
 ###  END MATH  ###
 
+# 11/27/2023
+
+Probably not going to modify the torch head, will probably just buy a better flowing regulator.
+
+https://www.amazon.com/dp/B07M7VTMGG?th=1&psc=1&language=en_US
+$11.49
+47600 BTU/hr (variable)
+
+47600 / 47.80164847333487
+995.7815581727 g/hr
+16.596359302878334 gpm
+
+# reference from 11/9/2023
+
+	Results: //at 6000 ft
+
+	Real AFR(Lean, lambda: 1.1384602064662863): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 8.619485573480993 gpm of fuel, and to max out the engine(3800 RPM), it would need 14.888202354194444 gpm of fuel.
+
+	Ideal AFR(Stoicheometric, lambda: 1): To run a 0.0705L(70.5cc) 2-stroke engine at idle(2200 RPM), one would have to supply 9.812941325618349 gpm of fuel, and to max out the engine(3800 RPM), it would need 16.949625926068055 gpm of fuel.
+
+	Actual BTU/min
+	8.619485573480993 * 47.80164847333487
+	412.0256194045 BTU/min
+	24721.53716427 BTU/h
+
+	14.888202354194444 * 47.80164847333487
+	711.6806153351 BTU/min
+	42700.836920106 BTU/h
+
+	Ideal BTU/min
+	9.812941325618349 * 47.80164847333487
+	469.0747717367 BTU/min
+	28144.486304202 BTU/h
+
+	16.949625926068055 * 47.80164847333487
+	810.2200602724 BTU/min
+	48613.203616344 BTU/h
+
+	1HP is about 2,544 BTU/h, with a 15-20% energy efficiency
+
+	A 400g canister should last between 46.4 minutes(idle) and 26.86 minutes(full throttle) on the "actual" tune,
+	and 40.76 minutes(idle) to 23.6 minutes(full throttle) on a "ideal" tune
+	A 1LB(453g) canister should last 52.55 minutes(idle) to 30.43 minutes(full throttle) on the "actual" tune, 
+	and 46.16 minutes(idle) to 26.72 minutes(full throttle) on a "ideal" tune
+
+which means this linked [https://www.amazon.com/dp/B07M7VTMGG?th=1&psc=1&language=en_US] item could run the 2 stroke toro, but I have recieved a new mower, courtesy of Mrs.Manley.
+
+Toro 22 inch front drive self propelled + briggs & stratton 150cc 
+(i think it is code 21442[https://www.toro.com/en/product/21442])
+
+Specs:
+	Air Filter:	Briggs & Stratton Part #593260 - Not Sold on toro.com
+	Bagger Capacity:	1.5 bushels
+	Box Dimensions:	42 in. x 24.5 in. x 17.25 in. / 106.7 cm x 62.2 cm x 43.8 cm
+	CARB Compliant:	CARB Compliant
+	Cutting Width:	22 in / 56 cm
+	Deck Material:	15 Gauge Steel
+	Discharge Chute	Not Included in the box. The free discharge chute for walk behind mowers can be requested at time of registration at Toro.com/register
+	Drive System:	Front Wheel Drive
+	Drive Type:	Front-Wheel Drive
+	Engine:	6.25 ft-lb Gross Torque* Briggs & Stratton® 150 cc
+	Engine Brand:	Briggs and Stratton
+	Engine Displacement (cc):	150 cc
+	Fuel Capacity:	0.2 gal. / 0.75 L / 0.8 Qt.
+	Fuel Type:	Gasoline
+	Guaranteed to Start Promise	3-Year GTS
+	Handle Type:	1-Piece, Adjustable Height
+	Height of Cut:	1.0 - 4.0 in. / 2.5 - 10.2 cm
+	Height of Cut Adjustment:	4-point
+	Included in the Box:	18 oz. Bottle of Oil, Grass Bag, Mower, Quick Start Guide
+	Mulch, Bag, Side Discharge	Bag standard, Mulch standard, Rear Discharge
+	Number of Blades:	1
+	Product Features:	CARB Compliant, High Wheel, Self-Propelled
+	Product Type:	Walk Behind Mowers
+	Product Use:	Residential
+	Recommended Oil Type:	SAE 30
+	Spark Plug Type:	Briggs & Stratton Part #692051 - Not Sold on toro.com
+	Start Type:	Pull Cord
+	Wheel Height:	Front 8 in. / 20.3 cm; Rear 9.65 in. / 24.5 cm
+	Yard Size:	Up to 1/2 acre
+
+running RPM 3000+-100 #idle and max
+idle 2900
+max 3100
+
+# program output (+ a small bugfix)
+
+Results: //6000ft
+
+Real AFR(Lean, lambda: 1.1384602064662865): To run a 0.15L(150.0cc) engine at idle(2900 RPM), one would have to supply 12.087286345790561 gpm of fuel, and to max out the engine(3100 RPM), it would need 12.92089230067267 gpm of fuel.
+
+Ideal AFR(Stoicheometric, lambda: 1): To run a 0.15L(150.0cc) engine at idle(2900 RPM), one would have to supply 13.760894508845848 gpm of fuel, and to max out the engine(3100 RPM), it would need 14.709921716352458 gpm of fuel.
+
+
+meaning that the linked [https://www.amazon.com/dp/B07M7VTMGG?th=1&psc=1&language=en_US] nozzle could easily handle the mower, possibly allowing it to rev higher

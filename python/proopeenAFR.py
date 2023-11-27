@@ -280,13 +280,13 @@ disp = 141#cc #we're assuming 1/2 of the displacement is for the intake, conside
 
 print('')
 while True:
-    displacement = input(f"Displacement in cc(numbers only, Default is {disp}cc/2, bc we assume 2 stroke)")
+    displacement = input(f"Displacement in cc(numbers only, Default is {disp}cc/2)")
     if (displacement == ''):
         displace = disp/2
         break
     else:
         try:
-            displace = float(eval(displacement))
+            displace = float(eval(displacement))/2
         except:
             print('not a number, to use Default value, press ENTER')
             displace = displacement
@@ -471,7 +471,7 @@ fuelUseMax = maxRPM * actualFuelMass
 
 print('\nResults:')
 
-print(f'\nReal AFR({ratioType}, lambda: {lambo}): To run a {displacement}L({displacement*1000}cc) 2-stroke engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
+print(f'\nReal AFR({ratioType}, lambda: {lambo}): To run a {displacement*2}L({displacement*2*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
 '''
 if (stroke == 2):
     fuelUseIdle = idleRPM * actualFuelMass
@@ -485,5 +485,5 @@ else:
 fuelUseIdle = idleRPM * idealFuelMass
 fuelUseMax = maxRPM * idealFuelMass
 
-print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement}L({displacement*1000}cc) 2-stroke engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
+print(f'Ideal AFR(Stoicheometric, lambda: 1): To run a {displacement*2}L({displacement*2*1000}cc) engine at idle({idleRPM} RPM), one would have to supply {fuelUseIdle} gpm of fuel, and to max out the engine({maxRPM} RPM), it would need {fuelUseMax} gpm of fuel.\n')
 
