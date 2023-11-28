@@ -185,7 +185,7 @@ d = 10
 Probably not going to modify the torch head, will probably just buy a better flowing regulator.
 
 https://www.amazon.com/dp/B07M7VTMGG?th=1&psc=1&language=en_US
-$11.49
+$9.19
 47600 BTU/hr (variable)
 
 47600 / 47.80164847333487
